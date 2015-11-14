@@ -35,18 +35,15 @@ method init(b: Button, frame: Rect) =
     b.state = bsUp
     b.backgroundColor = whiteColor()
 
-proc drawTitle(b: Button, xOffset: Coord) =
-    if b.title != nil:
-        let c = currentContext()
-        c.fillColor = if b.state == bsDown and b.style == bsRegular:
-                whiteColor()
-            else:
-                blackColor()
+proc drawTitle(c: Chart, xOffset: Coord) =
+    if c.title != nil:
+        let cxt = currentContext()
+        cxt.fillColor = whiteColor()
 
         let font = systemFont()
-        var titleRect = b.bounds
-        var pt = centerInRect(font.sizeOfString(b.title), titleRect)
+        var titleRect = c.bounds
+        var pt = centerInRect(font.sizeOfString(c.title), titleRect)
         if pt.x < xOffset: pt.x = xOffset
-        c.drawText(font, pt, b.title)
+        cxt.drawText(font, pt, c.title)
 
 

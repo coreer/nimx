@@ -1,6 +1,6 @@
 
 
-type ButtonStyle* = enum
-    bsRegular
-    bsCheckbox
-    bsRadiobox
+type DataItemStyle* = enum
+    oneValuable
+    twoValuable
+
