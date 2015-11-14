@@ -17,7 +17,7 @@ type ChartStyle* = enum
 
 
 type Chart* = ref object of Control
-    caption*: string
+    title*: string
     dataItems*: seq[DataItem]
     style*: ChartStyle
 
@@ -29,4 +29,24 @@ proc newChart*(r: Rect): Chart =
 proc newPieChart*(r: Rect): Chart =
     result = newChart(r)
     result.style = pieChart
+
+method init(b: Button, frame: Rect) =
+    procCall b.Control.init(frame)
+    b.state = bsUp
+    b.backgroundColor = whiteColor()
+
+proc drawTitle(b: Button, xOffset: Coord) =
+    if b.title != nil:
+        let c = currentContext()
+        c.fillColor = if b.state == bsDown and b.style == bsRegular:
+                whiteColor()
+            else:
+                blackColor()
+
+        let font = systemFont()
+        var titleRect = b.bounds
+        var pt = centerInRect(font.sizeOfString(b.title), titleRect)
+        if pt.x < xOffset: pt.x = xOffset
+        c.drawText(font, pt, b.title)
+
 
