@@ -30,10 +30,9 @@ proc newPieChart*(r: Rect): Chart =
     result = newChart(r)
     result.style = pieChart
 
-method init(b: Button, frame: Rect) =
-    procCall b.Control.init(frame)
-    b.state = bsUp
-    b.backgroundColor = whiteColor()
+method init(c: Chart, frame: Rect) =
+    procCall c.Control.init(frame)
+    c.backgroundColor = whiteColor()
 
 proc drawTitle(c: Chart, xOffset: Coord) =
     if c.title != nil:
