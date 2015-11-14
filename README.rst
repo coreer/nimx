@@ -5,7 +5,7 @@ nimx |travis|
 .. |travis| image:: https://travis-ci.org/yglukhov/nimx.svg?branch=master
     :target: https://travis-ci.org/yglukhov/nimx
 
-Cross-platform GUI framework in `Nim <https://github.com/nim-lang/nim>`_.
+Cross-platform GUI framework in `Nim <https://github.com/nim-lang/nim>`_. This fork is adding Chart to the framework.
 
 .. image:: ./doc/sample-screenshot.png
 
