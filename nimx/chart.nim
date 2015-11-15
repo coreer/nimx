@@ -7,6 +7,7 @@ import font
 import app
 import view_event_handling
 import composition
+import chart_data_item
 
 export control
 
@@ -19,42 +20,37 @@ type ChartStyle* = enum
     csPolarAreaChart
     csPieChart
 
-type ChartBehavior = enum
-    cbMomentaryLight
-    cbToggle
-
 type Chart* = ref object of Control
     title*: string
-    state*: ChartState
-    value*: int8
+    dataItems*: seq[ChartDataItem]
     style*: ChartStyle
-    behavior*: ChartBehavior
+    nameX*: string
+    nameY*: string
 
-proc newPieChart*(r: Rect): Chart =
+proc newChart*(r: Rect): Chart =
     result.new()
     result.init(r)
-    result.style = csPieChart
+
+proc newBarChart*(r: Rect): Chart =
+    result = newChart(r)
+    result.style = csBarChart
 
 method init(c: Chart, frame: Rect) =
     procCall c.Control.init(frame)
-    c.state = csUp
     c.backgroundColor = whiteColor()
 
 proc drawTitle(c: Chart, xOffset: Coord) =
     if c.title != nil:
-        let cc = currentContext()
-        cc.fillColor = if c.state == csDown:
-                whiteColor()
-            else:
-                blackColor()
+        let cxt = currentContext()
+        cxt.fillColor = whiteColor()
 
         let font = systemFont()
         var titleRect = c.bounds
         var pt = centerInRect(font.sizeOfString(c.title), titleRect)
         if pt.x < xOffset: pt.x = xOffset
-        cc.drawText(font, pt, c.title)
+        cxt.drawText(font, pt, c.title)
 
-var pieChartComposition = newComposition """
+var barChartComposition = newComposition """
 uniform vec4 uStrokeColor;
 uniform vec4 uFillColorStart;
 uniform vec4 uFillColorEnd;
@@ -71,40 +67,14 @@ void compose() {
 }
 """
 
-proc setState*(c: Chart, s: ChartState) =
-    if c.state != s:
-        c.state = s
-        c.setNeedsDisplay()
-
-method onMouseDown(c: Chart, e: var Event): bool =
-    result = true
-
-template boolValue*(c: Chart): bool = bool(c.value)
-
-template toggleValue(v: int8): int8 =
-    if v == 0:
-        1
-    else:
-        0
-
-method onMouseUp(c: Chart, e: var Event): bool =
-    result = true
-
-proc drawPieChartStyle(c: Chart, r: Rect) =
-    pieChartComposition.draw r:
+proc drawBarChartStyle(c: Chart, r: Rect) =
+    barChartComposition.draw r:
             setUniform("uStrokeColor", newGrayColor(0.78))
             setUniform("uFillColorStart", c.backgroundColor)
             setUniform("uFillColorEnd", c.backgroundColor)
     c.drawTitle(0)
 
-    discard """ let bezelRect = newRect(0, 0, c.bounds.height, c.bounds.height)
-    let c = currentContext()
-    c.fillColor = whiteColor()
-    c.strokeColor = newGrayColor(0.78)
-    c.strokeWidth = 1
-    c.drawEllipseInRect(bezelRect) """
-
 
 method draw(c: Chart, r: Rect) =
-    if c.style == csPieChart:
-      c.drawPieChartStyle(r)
+    if c.style == csBarChart:
+      c.drawBarChartStyle(r)

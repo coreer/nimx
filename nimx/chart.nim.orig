@@ -1,0 +1,128 @@
+import control
+import context
+import types
+import system_logger
+import event
+import font
+import app
+import view_event_handling
+import composition
+
+export control
+
+const selectionColor = newColor(0.40, 0.59, 0.95)
+
+type ChartStyle* = enum
+    csLineChart
+    csBarChart
+    csRadarChart
+    csPolarAreaChart
+    csPieChart
+
+type ChartBehavior = enum
+    cbMomentaryLight
+    cbToggle
+
+type Chart* = ref object of Control
+    title*: string
+    state*: ChartState
+    value*: int8
+    style*: ChartStyle
+    behavior*: ChartBehavior
+
+proc newPieChart*(r: Rect): Chart =
+    result.new()
+    result.init(r)
+    result.style = csPieChart
+
+<<<<<<< HEAD
+method init(c: Chart, frame: Rect) =
+    procCall c.Control.init(frame)
+    c.state = csUp
+=======
+proc newPieChart*(r: Rect): Chart =
+    result = newChart(r)
+    result.style = pieChart
+
+method init(c: Chart, frame: Rect) =
+    procCall c.Control.init(frame)
+>>>>>>> 4189512007b129ba4a803f409555950b5feef786
+    c.backgroundColor = whiteColor()
+
+proc drawTitle(c: Chart, xOffset: Coord) =
+    if c.title != nil:
+<<<<<<< HEAD
+        let cc = currentContext()
+        cc.fillColor = if c.state == csDown:
+                whiteColor()
+            else:
+                blackColor()
+=======
+        let cxt = currentContext()
+        cxt.fillColor = whiteColor()
+>>>>>>> 4189512007b129ba4a803f409555950b5feef786
+
+        let font = systemFont()
+        var titleRect = c.bounds
+        var pt = centerInRect(font.sizeOfString(c.title), titleRect)
+        if pt.x < xOffset: pt.x = xOffset
+<<<<<<< HEAD
+        cc.drawText(font, pt, c.title)
+
+var pieChartComposition = newComposition """
+uniform vec4 uStrokeColor;
+uniform vec4 uFillColorStart;
+uniform vec4 uFillColorEnd;
+uniform sampler2D tex;
+float radius = 0.0;
+
+void compose() {
+    vec4 fc = gradient(smoothstep(bounds.y, bounds.y + bounds.w, vPos.y),
+        uFillColorStart,
+        uFillColorEnd);
+
+    drawShape(sdRoundedRect(bounds, radius), uStrokeColor);
+    drawShape(sdRegularPolygon(vec2(55.0, 15.0), 40.0, 20, PI*1.5), vec4(8.0));
+}
+"""
+
+proc setState*(c: Chart, s: ChartState) =
+    if c.state != s:
+        c.state = s
+        c.setNeedsDisplay()
+
+method onMouseDown(c: Chart, e: var Event): bool =
+    result = true
+
+template boolValue*(c: Chart): bool = bool(c.value)
+
+template toggleValue(v: int8): int8 =
+    if v == 0:
+        1
+    else:
+        0
+
+method onMouseUp(c: Chart, e: var Event): bool =
+    result = true
+
+proc drawPieChartStyle(c: Chart, r: Rect) =
+    pieChartComposition.draw r:
+            setUniform("uStrokeColor", newGrayColor(0.78))
+            setUniform("uFillColorStart", c.backgroundColor)
+            setUniform("uFillColorEnd", c.backgroundColor)
+    c.drawTitle(0)
+
+    discard """ let bezelRect = newRect(0, 0, c.bounds.height, c.bounds.height)
+    let c = currentContext()
+    c.fillColor = whiteColor()
+    c.strokeColor = newGrayColor(0.78)
+    c.strokeWidth = 1
+    c.drawEllipseInRect(bezelRect) """
+=======
+        cxt.drawText(font, pt, c.title)
+>>>>>>> 4189512007b129ba4a803f409555950b5feef786
+
+
+method draw(c: Chart, r: Rect) =
+    if c.style == csPieChart:
+      c.drawPieChartStyle(r)

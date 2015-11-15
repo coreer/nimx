@@ -69,7 +69,7 @@ method init(v: ControlsSampleView, r: Rect) =
     pb.items = @["Popup button", "Item 1", "Item 2"]
     v.addSubview(pb) """
 
-    let chart = newPieChart(newRect(40, 160, 400, 80))
+    let chart = newBarChart(newRect(20, 20, 500, 300))
     chart.title = "Chart"
     v.addSubview(chart)
 
