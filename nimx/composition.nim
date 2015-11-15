@@ -9,6 +9,7 @@ export context
 const commonDefinitions = """
 #define PI 3.14159265359
 #define TWO_PI 6.28318530718
+#define between(v,x1,x2) (v>= x1 && v<=x2)
 
 vec4 insetRect(vec4 rect, float by) {
     return vec4(rect.xy + by, rect.zw - by * 2.0);

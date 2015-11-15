@@ -7,13 +7,14 @@ import nimx.text_field
 import nimx.slider
 import nimx.popup_button
 import nimx.progress_indicator
+import nimx.chart
 
 type ControlsSampleView = ref object of View
 
 method init(v: ControlsSampleView, r: Rect) =
     procCall v.View.init(r)
 
-    let label = newLabel(newRect(10, 10, 100, 20))
+    discard """ let label = newLabel(newRect(10, 10, 100, 20))
     let textField = newTextField(newRect(120, 10, v.bounds.width - 130, 20))
     textField.autoresizingMask = { afFlexibleWidth, afFlexibleMaxY }
     label.text = "Text field:"
@@ -66,6 +67,10 @@ method init(v: ControlsSampleView, r: Rect) =
 
     let pb = PopupButton.new(newRect(120, 90, 120, 20))
     pb.items = @["Popup button", "Item 1", "Item 2"]
-    v.addSubview(pb)
+    v.addSubview(pb) """
+
+    let chart = newPieChart(newRect(40, 160, 400, 80))
+    chart.title = "Chart"
+    v.addSubview(chart)
 
 registerSample "Controls", ControlsSampleView.new(newRect(0, 0, 100, 100))

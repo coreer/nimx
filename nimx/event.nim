@@ -19,6 +19,11 @@ type ButtonState* = enum
     bsUp
     bsDown
 
+type ChartState* = enum
+    csUnknown
+    csUp
+    csDown
+
 type KeyCode* = enum
     kcUnknown
     kcMouseButtonPrimary

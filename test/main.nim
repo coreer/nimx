@@ -11,10 +11,7 @@ import nimx.text_field
 import sequtils
 import intsets
 
-import sample01_welcome
 import sample02_controls
-import sample03_image
-import sample04_animation
 
 
 when defined js:
